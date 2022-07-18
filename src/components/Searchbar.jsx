@@ -21,7 +21,7 @@ handleChangeName = e => {
         e.preventDefault();
 
         if (value.trim() === '') {
-            Notify.failure("Please enter something!")
+            Notify.warning("Please enter something!")
             return;
         }
 

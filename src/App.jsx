@@ -23,26 +23,26 @@ export default class App extends Component  {
     const options = { value, page };
     
     if (prevState.value !== value) {
-      this.setState(() => ({ loading: true, images:[] }));
+      this.setState(() => ({ loading: true, images:[], error:null }));
 
       Api(options).then(images => {
           
         if (images.hits.length === 0) {
-         return this.setState(error => ({ error }))
+          this.setState(error => ({ error }))
         }
-         this.setState({ images: images.hits })
+        this.setState({ images: images.hits })
+        
       }).catch(error => this.setState({ error })).finally(() => this.setState({ loading: false }));
 
     }
 
     if (prevState.page !== page && page !== 1) {
-      this.setState(() => ({ loading: true }));
+      this.setState(() => ({ loading: true}));
 
       Api(options).then(images =>
         this.setState({
           images: [...prevState.images, ...images.hits]
         }))
-        .catch(error => this.setState({ error }))
         .finally(() => this.setState({ loading: false }));
     };
   };
@@ -84,11 +84,9 @@ export default class App extends Component  {
         {loading && <Loader />}
         {images.length !== 0 && (loading ? <Loader /> : <Button onClick={this.handleLoadMore} />)}
         {showModal && <Modal onClose={this.onClose}>{largeImage}</Modal>}
-        {error && <>{ error.message }</>}
+        {error && <h1>Sorry, there are no images matching your search query. Please try again.</h1>}
       </div>
     );
   };
 };
-
-
 
